@@ -18,8 +18,10 @@ type Subject struct {
 
 type Grade struct {
 	gorm.Model
-	GradeID   int `gorm:"primaryKey"`
-	StudentID int `gorm:"foreignKey"`
-	SubjectID int `gorm:"foreignKey"`
+	Id        int `gorm:"primaryKey"`
+	StudentID int
+	Student   Student `gorm: "constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	SubjectID int
+	Subject   Subject `gorm: "constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Grade     float64
 }

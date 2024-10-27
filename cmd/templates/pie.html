@@ -1,0 +1,155 @@
+{{define "pie"}}
+</div>
+
+    <script>
+    const userForm = document.getElementById("stu-form")
+    const studentTable = document.getElementById("student-table")
+
+    async function saveStudent(event) { 
+        event.preventDefault()
+        const formData = new FormData(userForm)
+        const response = await fetch('/api/students', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(Object.fromEntries(formData))
+            })
+        await getStudent()
+    }
+
+    async function getStudent(){
+        const response = await fetch(
+                '/api/students', {
+                    method: 'GET'
+            }
+        )
+        const students = await response.json()
+            studentTable.innerHTML = ''
+            for (const student of students) {
+                const li = document.createElement('li')
+                const btnE = document.createElement('button')
+                btnE.textContent = 'Eliminar'
+                btnE.className = 'btn btn-outline-danger'
+                btnE.addEventListener('click', () => deleteStudent(student.Id))
+                li.appendChild(document.createTextNode(`${student.Id} - ${student.Name} - ${student.Email} - ${student.Group}`))
+                li.appendChild(btnE)
+                studentTable.appendChild(li)
+            }
+    }
+
+    async function deleteStudent(id) {
+        const response = await fetch(`/api/students/${id}`, {
+            method: 'DELETE'
+        })
+        await getStudent()
+    }
+
+        getStudent()
+        userForm.addEventListener("submit", saveStudent)
+
+//-------------------------------------------------------------------------------
+
+    const subFormm = document.getElementById("sub-form")
+    const subjectTable = document.getElementById("subject-table")
+
+    async function saveSubjects(event) { 
+        event.preventDefault()
+        const formDataa = new FormData(subFormm)
+        const responsee = await fetch('/api/subjects/', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(Object.fromEntries(formDataa))
+            })
+        await getSubject()
+    }
+
+    async function getSubject(){
+        const responsee = await fetch(
+                '/api/subjects', {
+                    method: 'GET'
+            }
+        )
+        const subjects = await responsee.json()
+            subjectTable.innerHTML = ''
+            for (const subject of subjects) {
+                const li = document.createElement('li')
+                const btnE = document.createElement('button')
+                btnE.textContent = 'Eliminar'
+                btnE.className = 'btn btn-outline-danger'
+                btnE.addEventListener('click', () => deleteSubject(subject.Id))
+                li.appendChild(document.createTextNode(`${subject.Id} - ${subject.Name}`))
+                li.appendChild(btnE)
+                subjectTable.appendChild(li)
+            }
+    }
+
+    async function deleteSubject(id) {
+        const responsee = await fetch(`/api/subjects/${id}`, {
+            method: 'DELETE'
+        })
+        await getSubject()
+    }
+
+    getSubject()
+    subFormm.addEventListener("submit", saveSubjects)
+
+//-------------------------------------------------------------------------------
+
+const gradeForm = document.getElementById("grade-form")
+const gradeTable = document.getElementById("grade-table")
+
+    async function saveGrade(event) { 
+        event.preventDefault()
+        const formDataGrade = new FormData(gradeForm)
+
+        const responseGrade = await fetch('/api/grades/', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(Object.fromEntries(formDataGrade))
+            })
+        await getGrade()
+    }
+
+    async function getGrade(){
+        const responseGrade = await fetch(
+                '/api/grades', {
+                    method: 'GET'
+            }
+        )
+        const grades = await responseGrade.json()
+            gradeTable.innerHTML = ''
+            for (const grade of grades) {
+                const li = document.createElement('li')
+                const btnE = document.createElement('button')
+                btnE.textContent = 'Eliminar'
+                btnE.className = 'btn btn-outline-danger'
+                btnE.addEventListener('click', () => deleteGrade(grade.Id))
+                li.appendChild(document.createTextNode(`${grade.Id} - ${grade.student_id} - ${grade.subject_id} - ${grade.grade}`))
+                li.appendChild(btnE)
+                gradeTable.appendChild(li)
+            }
+    }
+
+    async function deleteGrade(id) {
+        const responseGrade = await fetch(`/api/grades/${id}`, {
+            method: 'DELETE'
+        })
+        await getGrade()
+    }
+
+    getGrade()
+    gradeForm.addEventListener("submit", saveGrade)
+
+
+    </script>
+
+
+</body>
+</html>
+
+{{end}}
